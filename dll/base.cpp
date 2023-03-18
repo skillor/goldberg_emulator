@@ -630,9 +630,10 @@ static int WINAPI Mine_SendTo( SOCKET s, const char *buf, int len, int flags, co
         return Real_SendTo( s, buf, len, flags, to, tolen );
     } else {
         if (file_exists(get_full_program_path() + "redirect_wan_connections.txt") || file_exists(get_full_program_path() + "\\steam_settings\\redirect_wan_connections.txt")) {
+            struct sockaddr_in *addr_in = (struct sockaddr_in *)to;
             sockaddr_in RecvAddr;
             RecvAddr.sin_family = AF_INET;
-            RecvAddr.sin_port = &to->sin_port;
+            RecvAddr.sin_port = &addr_in->sin_port;
             RecvAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
             PRINT_DEBUG("REDIRECTING WAN TO LOCAL\n");
             return Real_SendTo( s, buf, len, flags, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr) );
@@ -648,9 +649,10 @@ static int WINAPI Mine_Connect( SOCKET s, const sockaddr *addr, int namelen )
         return Real_Connect(s, addr, namelen);
     } else {
         if (file_exists(get_full_program_path() + "redirect_wan_connections.txt") || file_exists(get_full_program_path() + "\\steam_settings\\redirect_wan_connections.txt")) {
+            struct sockaddr_in *addr_in = (struct sockaddr_in *)to;
             sockaddr_in RecvAddr;
             RecvAddr.sin_family = AF_INET;
-            RecvAddr.sin_port = &to->sin_port;
+            RecvAddr.sin_port = &addr_in->sin_port;
             RecvAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
             PRINT_DEBUG("REDIRECTING WAN TO LOCAL\n");
             return Real_Connect( s, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr) );
@@ -667,9 +669,10 @@ static int WINAPI Mine_WSAConnect( SOCKET s, const sockaddr *addr, int namelen, 
         return Real_WSAConnect(s, addr, namelen, lpCallerData, lpCalleeData, lpSQOS, lpGQOS);
     } else {
         if (file_exists(get_full_program_path() + "redirect_wan_connections.txt") || file_exists(get_full_program_path() + "\\steam_settings\\redirect_wan_connections.txt")) {
+            struct sockaddr_in *addr_in = (struct sockaddr_in *)to;
             sockaddr_in RecvAddr;
             RecvAddr.sin_family = AF_INET;
-            RecvAddr.sin_port = &to->sin_port;
+            RecvAddr.sin_port = &addr_in->sin_port;
             RecvAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
             PRINT_DEBUG("REDIRECTING WAN TO LOCAL\n");
             return Real_WSAConnect(s, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr), lpCallerData, lpCalleeData, lpSQOS, lpGQOS);
