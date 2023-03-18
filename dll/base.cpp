@@ -524,6 +524,11 @@ void Auth_Ticket_Manager::Callback(Common_Message *msg)
 #ifdef EMU_EXPERIMENTAL_BUILD
 #ifdef __WINDOWS__
 
+inline bool file_exists(const std::string& name) {
+  struct stat buffer;   
+  return (stat (name.c_str(), &buffer) == 0); 
+}
+
 struct ips_test {
     uint32_t ip_from;
     uint32_t ip_to;
@@ -652,11 +657,6 @@ static int WINAPI Mine_WSAConnect( SOCKET s, const sockaddr *addr, int namelen, 
         WSASetLastError(WSAECONNREFUSED);
         return SOCKET_ERROR;
     }
-}
-
-inline bool file_exists (const std::string& name) {
-  struct stat buffer;   
-  return (stat (name.c_str(), &buffer) == 0); 
 }
 
 #ifdef DETOURS_64BIT
