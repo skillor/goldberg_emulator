@@ -635,7 +635,7 @@ static int WINAPI Mine_SendTo( SOCKET s, const char *buf, int len, int flags, co
             RecvAddr.sin_family = AF_INET;
             RecvAddr.sin_port = addr_in->sin_port;
             RecvAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-            PRINT_DEBUG("REDIRECTING WAN TO LOCAL PORT %u\n", addr_in->sin_port);
+            PRINT_DEBUG("REDIRECTING WAN TO LOCAL PORT %u\n", ntohs(RecvAddr.sin_port));
             return Real_SendTo( s, buf, len, flags, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr) );
         }
         return len;
@@ -654,7 +654,7 @@ static int WINAPI Mine_Connect( SOCKET s, const sockaddr *addr, int namelen )
             RecvAddr.sin_family = AF_INET;
             RecvAddr.sin_port = addr_in->sin_port;
             RecvAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-            PRINT_DEBUG("REDIRECTING WAN TO LOCAL PORT %u\n", addr_in->sin_port);
+            PRINT_DEBUG("REDIRECTING WAN TO LOCAL PORT %u\n", ntohs(RecvAddr.sin_port));
             return Real_Connect( s, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr) );
         }
         WSASetLastError(WSAECONNREFUSED);
@@ -674,7 +674,7 @@ static int WINAPI Mine_WSAConnect( SOCKET s, const sockaddr *addr, int namelen, 
             RecvAddr.sin_family = AF_INET;
             RecvAddr.sin_port = addr_in->sin_port;
             RecvAddr.sin_addr.s_addr = inet_addr("127.0.0.1");
-            PRINT_DEBUG("REDIRECTING WAN TO LOCAL PORT %u\n", addr_in->sin_port);
+            PRINT_DEBUG("REDIRECTING WAN TO LOCAL PORT %u\n", ntohs(RecvAddr.sin_port));
             return Real_WSAConnect(s, (SOCKADDR *) & RecvAddr, sizeof (RecvAddr), lpCallerData, lpCalleeData, lpSQOS, lpGQOS);
         }
         WSASetLastError(WSAECONNREFUSED);
