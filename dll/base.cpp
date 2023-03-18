@@ -611,6 +611,10 @@ static bool is_lan_ip(const sockaddr *addr, int namelen)
         }
     }
 
+    if (file_exists(get_full_program_path() + "allow_lan_connections.txt") || file_exists(get_full_program_path() + "\\steam_settings\\allow_lan_connections.txt")) {
+        PRINT_DEBUG("NOT LAN IP, STILL ALLOWING\n");
+        return true;
+    }
     PRINT_DEBUG("NOT LAN IP\n");
     return false;
 }
